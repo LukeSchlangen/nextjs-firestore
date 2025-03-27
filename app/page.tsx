@@ -6,6 +6,7 @@ type Task = {
   id: string;
   title: string;
   status: 'IN_PROGRESS' | 'COMPLETE';
+  createdAt: number;
 };
 
 export default function Home() {
@@ -68,7 +69,7 @@ export default function Home() {
                   <input
                     type="checkbox"
                     checked={isComplete}
-                    onClick={() => updateTask(task, { status: isComplete ? 'IN_PROGRESS' : 'COMPLETE' })}
+                    onChange={() => updateTask(task, { status: isComplete ? 'IN_PROGRESS' : 'COMPLETE' })}
                     className="transition-transform duration-300 ease-in-out transform scale-100 checked:scale-125 checked:bg-green-500"
                   />
                 </td>
