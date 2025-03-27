@@ -1,9 +1,12 @@
 'use server'
-import { initializeApp, applicationDefault } from 'firebase-admin/app';
+import { initializeApp, applicationDefault, getApps } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
-initializeApp({
-  credential: applicationDefault()
-});
+const credential = applicationDefault();
+
+// Only initialize app if it does not already exist
+if (getApps().length === 0) {
+  initializeApp({ credential });
+}
 
 const db = getFirestore();
 const tasksRef = db.collection('tasks');
@@ -12,6 +15,7 @@ type Task = {
   id: string;
   title: string;
   status: 'IN_PROGRESS' | 'COMPLETE';
+  createdAt: number;
 };
 
 // CREATE
@@ -31,6 +35,7 @@ export async function getTasksFromDatabase() {
     id: doc.id,
     title: doc.data().title,
     status: doc.data().status,
+    createdAt: doc.data().createdAt,
   }));
   return tasks;
 }
